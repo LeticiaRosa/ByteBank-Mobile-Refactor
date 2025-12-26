@@ -32,7 +32,7 @@ supabase/
 
 ```bash
 # Navegar para o diretório do projeto
-cd ByteBank-Mobile
+cd ByteBank-Mobile-Refactor
 
 # Executar o script de migrations
 ./supabase/apply-migrations.sh

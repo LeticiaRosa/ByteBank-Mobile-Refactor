@@ -113,8 +113,8 @@ O ByteBank Mobile é uma plataforma de banking digital que utiliza tecnologias m
 ### 1. Clone o Repositório
 
 ```bash
-git clone https://github.com/LeticiaRosa/ByteBank-Mobile.git
-cd ByteBank-Mobile
+git clone https://github.com/LeticiaRosa/ByteBank-Mobile-Refactor.git
+cd ByteBank-Mobile-Refactor
 ```
 
 ### 2. Instale as Dependências
@@ -263,7 +263,7 @@ npx eas build --platform ios
 ## 🎨 Estrutura do Projeto
 
 ```
-ByteBank-Mobile/
+ByteBank-Mobile-Refactor/
 ├── src/
 │   ├── components/
 │   │   ├── AuthForm/           # Componente de autenticação
@@ -450,4 +450,4 @@ supabase db diff
 - [TanStack Query](https://tanstack.com/query)
 - [NativeWind](https://www.nativewind.dev/)
 
-Para mais ajuda, abra uma [issue](https://github.com/LeticiaRosa/ByteBank-Mobile/issues) no repositório.
+Para mais ajuda, abra uma [issue](https://github.com/LeticiaRosa/ByteBank-Mobile-Refactor/issues) no repositório.

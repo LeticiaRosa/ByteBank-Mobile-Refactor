@@ -12,7 +12,7 @@ echo "=================================="
 
 # Verificar se está no diretório correto
 if [ ! -f "package.json" ]; then
-    echo "❌ Execute este script na raiz do projeto ByteBank-Mobile"
+    echo "❌ Execute este script na raiz do projeto ByteBank-Mobile-Refactor"
     exit 1
 fi
 
