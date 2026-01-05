@@ -16,6 +16,7 @@ interface AccountProps {
   colorType?: "primary" | "success" | "destructive";
   formatType?: "currency" | "number";
   icon?: ReactNode;
+  isRealtimeConnected?: boolean; // Novo: indicador de conexão real-time
 }
 
 export function AccountInfos({
@@ -27,6 +28,7 @@ export function AccountInfos({
   colorType = "primary",
   formatType = "currency",
   icon,
+  isRealtimeConnected = false, // Novo: indicador de conexão real-time
 }: AccountProps) {
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
 
@@ -195,9 +197,20 @@ export function AccountInfos({
             </Animated.View>
           )}
           <View className="flex flex-col px-2">
-            <CustomText className="font-semibold text-card-foreground bg-red mb-2 text-md">
-              {title}
-            </CustomText>
+            <View className="flex-row items-center gap-2 mb-2">
+              <CustomText className="font-semibold text-card-foreground text-md">
+                {title}
+              </CustomText>
+              {/* Indicador de conexão real-time */}
+              {isRealtimeConnected && (
+                <View
+                  className="w-2 h-2 rounded-full"
+                  style={{
+                    backgroundColor: "#10b981", // green-500
+                  }}
+                />
+              )}
+            </View>
             <Animated.View style={{ opacity: opacityAnim }}>
               <CustomText
                 className={`text-2xl font-bold ${getAmountColorClass()}`}

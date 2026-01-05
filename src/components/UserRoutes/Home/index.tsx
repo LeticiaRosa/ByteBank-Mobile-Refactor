@@ -8,13 +8,20 @@ import { Wallet, TrendingDown, TrendingUp } from "lucide-react-native";
 import { useTheme } from "../../../hooks/useTheme";
 import { getTheme, colors } from "../../../styles/theme";
 import { MonthlyRevenueChart } from "./components/MonthlyRevenueChart";
-import { usePrimaryBankAccount } from "../../../hooks/useBankAccounts";
 import { useMonthlyFinancialSummary } from "../../../hooks/useMonthlyFinancialSummary";
 import { useStaggeredAnimation } from "../../../hooks/useStaggeredAnimation";
+import { useReactiveBalance } from "../../../hooks/useReactiveBalance";
 
 export function Home() {
   const { isDark } = useTheme();
-  const { data: accounts, isLoading } = usePrimaryBankAccount();
+
+  // 🚀 Hook de saldo reativo com RxJS + Supabase Realtime
+  const {
+    balance: realtimeBalance,
+    isConnected: isRealtimeConnected,
+    isLoading: isLoadingRealtimeBalance,
+  } = useReactiveBalance();
+
   const {
     monthlyRevenue,
     monthlyExpenses,
@@ -38,10 +45,10 @@ export function Home() {
 
   // Iniciar animações quando dados carregarem
   useEffect(() => {
-    if (!isLoading && !isLoadingFinancialSummary) {
+    if (!isLoadingRealtimeBalance && !isLoadingFinancialSummary) {
       startAnimations();
     }
-  }, [isLoading, isLoadingFinancialSummary, startAnimations]);
+  }, [isLoadingRealtimeBalance, isLoadingFinancialSummary, startAnimations]);
 
   // Componente wrapper animado
   const AnimatedSection = ({
@@ -54,7 +61,7 @@ export function Home() {
     <Animated.View style={getAnimatedStyle(index)}>{children}</Animated.View>
   );
 
-  if (isLoading || isLoadingFinancialSummary) {
+  if (isLoadingRealtimeBalance || isLoadingFinancialSummary) {
     return null;
   }
 
@@ -72,11 +79,12 @@ export function Home() {
           <AnimatedSection index={0}>
             <AccountInfos
               title="Saldo Disponível"
-              amount={accounts?.balance || 0}
-              isLoadingAccounts={isLoading}
+              amount={realtimeBalance} // 🚀 Usando saldo reativo em tempo real
+              isLoadingAccounts={isLoadingRealtimeBalance}
               formatType="currency"
               colorType="primary"
               icon={<Wallet size={24} color={iconColor} />}
+              isRealtimeConnected={isRealtimeConnected} // 🟢 Indicador de conexão real-time
             />
           </AnimatedSection>
 
