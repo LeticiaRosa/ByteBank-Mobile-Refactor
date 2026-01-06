@@ -89,29 +89,29 @@ export function Home() {
             />
           </AnimatedSection>
 
-          <AnimatedSection index={1}>
-            <AccountInfos
-              title="Receitas do Mês"
-              text={`${revenueGrowth} vs mês anterior`}
-              isLoadingAccounts={isLoadingFinancialSummary}
-              amount={MoneyUtils.centsToReais(monthlyRevenue)}
-              showeye={false}
-              colorType="destructive"
-              formatType="currency"
-              icon={<TrendingDown size={24} color={destructiveColor} />}
-            />
-          </AnimatedSection>
-
           <AnimatedSection index={2}>
             <AccountInfos
-              title="Gastos do Mês"
+              title="Receitas do Mês"
               text={`${expensesGrowth} vs mês anterior`}
               isLoadingAccounts={isLoadingFinancialSummary}
-              amount={monthlyExpenses}
+              amount={MoneyUtils.centsToReais(monthlyRevenue)}
               colorType="success"
               formatType="currency"
               showeye={false}
               icon={<TrendingUp size={24} color={successColor} />}
+            />
+          </AnimatedSection>
+
+          <AnimatedSection index={1}>
+            <AccountInfos
+              title="Gastos do Mês "
+              text={`${revenueGrowth} vs mês anterior`}
+              isLoadingAccounts={isLoadingFinancialSummary}
+              amount={MoneyUtils.centsToReais(monthlyExpenses)}
+              showeye={false}
+              colorType="destructive"
+              formatType="currency"
+              icon={<TrendingDown size={24} color={destructiveColor} />}
             />
           </AnimatedSection>
 
