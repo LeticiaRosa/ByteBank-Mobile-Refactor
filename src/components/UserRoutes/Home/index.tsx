@@ -11,6 +11,7 @@ import { MonthlyRevenueChart } from "./components/MonthlyRevenueChart";
 import { useMonthlyFinancialSummary } from "../../../hooks/useMonthlyFinancialSummary";
 import { useStaggeredAnimation } from "../../../hooks/useStaggeredAnimation";
 import { useReactiveBalance } from "../../../hooks/useReactiveBalance";
+import { MoneyUtils } from "../../../utils";
 
 export function Home() {
   const { isDark } = useTheme();
@@ -93,7 +94,7 @@ export function Home() {
               title="Receitas do Mês"
               text={`${revenueGrowth} vs mês anterior`}
               isLoadingAccounts={isLoadingFinancialSummary}
-              amount={monthlyRevenue}
+              amount={MoneyUtils.centsToReais(monthlyRevenue)}
               showeye={false}
               colorType="destructive"
               formatType="currency"

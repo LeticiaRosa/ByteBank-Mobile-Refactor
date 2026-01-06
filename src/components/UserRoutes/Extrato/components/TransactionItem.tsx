@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Transaction } from "../../../../lib/transactions";
 import { useTheme } from "../../../../hooks/useTheme";
 import { getTheme, getColorScale, colors } from "../../../../styles/theme";
+import { MoneyUtils } from "../../../../utils";
 
 interface TransactionItemProps {
   transaction: Transaction;
@@ -427,7 +428,7 @@ export function TransactionItem({
             }}
           >
             {getAmountPrefix(transaction.transaction_type)}
-            {formatAmount(transaction.amount)}
+            {formatAmount(MoneyUtils.centsToReais(transaction.amount))}
           </Text>
 
           {/* Botões de processo para transações pendentes */}
