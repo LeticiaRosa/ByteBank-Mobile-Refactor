@@ -1,9 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView, StatusBar } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { MyDrawer } from "./Sidebar";
 import { getTheme } from "../../styles/theme";
 import { useTheme } from "../../hooks/useTheme";
+import { Sidebar } from "../../presentation/sidebar/Sidebar";
 
 // Componente interno que usa o hook
 export function UserRoutes() {
@@ -26,7 +26,7 @@ export function UserRoutes() {
           translucent={false}
         />
         <NavigationContainer>
-          <MyDrawer />
+          <Sidebar />
         </NavigationContainer>
       </SafeAreaView>
     </SafeAreaProvider>

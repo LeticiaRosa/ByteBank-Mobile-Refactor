@@ -1,3 +1,10 @@
+/**
+ * Presentation Layer - Sidebar View
+ * Componente de apresentação puro (stateless)
+ * Responsável apenas pela renderização visual do Drawer Navigator
+ * Segue o princípio de Responsabilidade Única (S do SOLID)
+ */
+
 import { lazy, Suspense, useEffect } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
@@ -8,10 +15,7 @@ import {
   UserCircle,
 } from "lucide-react-native";
 import { TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useTheme } from "../../../hooks/useTheme";
-import { getThemeColors } from "../../../styles/theme";
-import { styles } from "./styles";
+import { SidebarTheme } from "../../domain/sidebar/SidebarState";
 
 // Lazy load das telas com logs
 const startTime = performance.now();
@@ -20,7 +24,7 @@ console.log("🚀 [Sidebar] Iniciando lazy load dos componentes");
 const Home = lazy(() => {
   const loadStart = performance.now();
   console.log("⏳ [Sidebar] Carregando Home...");
-  return import("../Home").then((m) => {
+  return import("../../components/UserRoutes/Home").then((m) => {
     const loadEnd = performance.now();
     console.log(
       `✅ [Sidebar] Home carregado em ${(loadEnd - loadStart).toFixed(2)}ms`
@@ -32,7 +36,7 @@ const Home = lazy(() => {
 const Transactions = lazy(() => {
   const loadStart = performance.now();
   console.log("⏳ [Sidebar] Carregando Transactions...");
-  return import("../Transactions").then((m) => {
+  return import("../../components/UserRoutes/Transactions").then((m) => {
     const loadEnd = performance.now();
     console.log(
       `✅ [Sidebar] Transactions carregado em ${(loadEnd - loadStart).toFixed(
@@ -46,7 +50,7 @@ const Transactions = lazy(() => {
 const Profile = lazy(() => {
   const loadStart = performance.now();
   console.log("⏳ [Sidebar] Carregando Profile...");
-  return import("../../../presentation/profile/Profile").then((m) => {
+  return import("../profile/Profile").then((m) => {
     const loadEnd = performance.now();
     console.log(
       `✅ [Sidebar] Profile carregado em ${(loadEnd - loadStart).toFixed(2)}ms`
@@ -58,7 +62,7 @@ const Profile = lazy(() => {
 const ExtractPage = lazy(() => {
   const loadStart = performance.now();
   console.log("⏳ [Sidebar] Carregando ExtractPage...");
-  return import("../Extrato").then((m) => {
+  return import("../../components/UserRoutes/Extrato").then((m) => {
     const loadEnd = performance.now();
     console.log(
       `✅ [Sidebar] ExtractPage carregado em ${(loadEnd - loadStart).toFixed(
@@ -71,11 +75,13 @@ const ExtractPage = lazy(() => {
 
 const Drawer = createDrawerNavigator();
 
-// Componente de Loading para Suspense
-function ScreenLoader() {
-  const { isDark } = useTheme();
-  const theme = getThemeColors(isDark);
+interface SidebarViewProps {
+  theme: SidebarTheme;
+  onNavigateToProfile: () => void;
+}
 
+// Componente de Loading para Suspense
+function ScreenLoader({ theme }: { theme: SidebarTheme }) {
   useEffect(() => {
     const loadStart = performance.now();
     console.log("🔄 [ScreenLoader] Exibindo loader...");
@@ -92,10 +98,10 @@ function ScreenLoader() {
 
   return (
     <View
-      style={[loaderStyles.container, { backgroundColor: theme.background }]}
+      style={[loaderStyles.container, { backgroundColor: theme.mainColor }]}
     >
-      <ActivityIndicator size="large" color={theme.primary} />
-      <Text style={[loaderStyles.text, { color: theme.foreground }]}>
+      <ActivityIndicator size="large" color={theme.accentColor} />
+      <Text style={[loaderStyles.text, { color: theme.labelColor }]}>
         Carregando...
       </Text>
     </View>
@@ -114,50 +120,46 @@ const loaderStyles = StyleSheet.create({
   },
 });
 
-export function MyDrawer() {
-  const { isDark } = useTheme();
-  const navigation = useNavigation();
+const styles = StyleSheet.create({
+  headerButton: {
+    marginRight: 15,
+  },
+});
 
+export function SidebarView({ theme, onNavigateToProfile }: SidebarViewProps) {
   useEffect(() => {
     const initEnd = performance.now();
     console.log(
-      `🎉 [MyDrawer] Drawer inicializado em ${(initEnd - startTime).toFixed(
+      `🎉 [SidebarView] Drawer inicializado em ${(initEnd - startTime).toFixed(
         2
       )}ms`
     );
   }, []);
 
-  // Cores baseadas no theme.ts simplificado
-  const theme = getThemeColors(isDark);
-  const mainColor = theme.primary;
-  const secondaryColor = theme.secondary;
-  const accentColor = theme.sidebar;
-
   return (
     <Drawer.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: mainColor,
+          backgroundColor: theme.mainColor,
         },
-        headerTintColor: accentColor,
+        headerTintColor: theme.accentColor,
         drawerStyle: {
-          backgroundColor: accentColor,
-          width: styles.drawerContainer.width,
+          backgroundColor: theme.accentColor,
+          width: 240,
         },
-        drawerInactiveTintColor: theme.sidebarForeground,
-        drawerActiveTintColor: theme.sidebarForeground,
-        drawerActiveBackgroundColor: secondaryColor,
+        drawerInactiveTintColor: theme.inactiveTintColor,
+        drawerActiveTintColor: theme.activeTintColor,
+        drawerActiveBackgroundColor: theme.activeBackgroundColor,
         drawerLabelStyle: {
-          color: theme.sidebarForeground,
-          marginLeft: 12, // Padding entre ícone e texto
+          color: theme.labelColor,
+          marginLeft: 12,
         },
-
         headerRight: () => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("Perfil")}
+            onPress={onNavigateToProfile}
             style={styles.headerButton}
           >
-            <UserCircle color={accentColor} size={24} />
+            <UserCircle color={theme.accentColor} size={24} />
           </TouchableOpacity>
         ),
       }}
@@ -171,7 +173,7 @@ export function MyDrawer() {
         }}
       >
         {(props: any) => (
-          <Suspense fallback={<ScreenLoader />}>
+          <Suspense fallback={<ScreenLoader theme={theme} />}>
             <Home {...props} />
           </Suspense>
         )}
@@ -186,7 +188,7 @@ export function MyDrawer() {
         }}
       >
         {(props: any) => (
-          <Suspense fallback={<ScreenLoader />}>
+          <Suspense fallback={<ScreenLoader theme={theme} />}>
             <Transactions {...props} />
           </Suspense>
         )}
@@ -201,7 +203,7 @@ export function MyDrawer() {
         }}
       >
         {(props: any) => (
-          <Suspense fallback={<ScreenLoader />}>
+          <Suspense fallback={<ScreenLoader theme={theme} />}>
             <ExtractPage {...props} />
           </Suspense>
         )}
@@ -216,7 +218,7 @@ export function MyDrawer() {
         }}
       >
         {(props: any) => (
-          <Suspense fallback={<ScreenLoader />}>
+          <Suspense fallback={<ScreenLoader theme={theme} />}>
             <Profile {...props} />
           </Suspense>
         )}
