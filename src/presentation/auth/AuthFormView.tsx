@@ -8,7 +8,7 @@
 import { View, ActivityIndicator } from "react-native";
 import { AuthStatus } from "../../domain/auth/AuthState";
 import { UserRoutes } from "../../components/UserRoutes";
-import { Login } from "../../components/UserRoutes/Login";
+import { LoginForm } from "../login/LoginForm";
 
 interface AuthFormViewProps {
   authStatus: AuthStatus;
@@ -39,7 +39,7 @@ export function AuthFormView({ authStatus }: AuthFormViewProps) {
   // Usuário não autenticado - mostra tela de login
   return (
     <View style={{ flex: 1 }} className="bg-gray-1 dark:bg-gray-12">
-      <Login />
+      <LoginForm />
     </View>
   );
 }

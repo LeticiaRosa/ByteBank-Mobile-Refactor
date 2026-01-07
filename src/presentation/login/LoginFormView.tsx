@@ -1,10 +1,16 @@
+/**
+ * Presentation Layer - Login Form View
+ * Componente de apresentação puro (stateless)
+ * Responsável apenas pela renderização visual
+ * Segue o princípio de Responsabilidade Única (S do SOLID)
+ */
+
 import {
   View,
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { useState } from "react";
 import {
   User,
   Lock,
@@ -13,23 +19,41 @@ import {
   LogIn,
   PiggyBankIcon,
 } from "lucide-react-native";
-import { useTheme } from "../../../hooks/useTheme";
-import { useAuth } from "../../../hooks/useAuth";
-import { useToast } from "../../../hooks/useToast";
-import { getTheme } from "../../../styles/theme";
-import { CustomText } from "../../ui/Text";
-import { styles } from "./styles";
+import { getTheme } from "../../styles/theme";
+import { CustomText } from "../../components/ui/Text";
+import { LoginMode, LoginFormData } from "../../domain/login/LoginState";
 
-export function Login() {
-  const { isDark } = useTheme();
-  const { signIn, signUp, loading } = useAuth();
-  const { validationError, authError, authSuccess, showInfo } = useToast();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [isSignUpMode, setIsSignUpMode] = useState(false);
-  // Cores baseadas no theme.ts simplificado
+interface LoginFormViewProps {
+  mode: LoginMode;
+  formData: LoginFormData;
+  showPassword: boolean;
+  loading: boolean;
+  isDark: boolean;
+  onLogin: () => void;
+  onSignUp: () => void;
+  onForgotPassword: () => void;
+  onToggleMode: () => void;
+  onTogglePasswordVisibility: () => void;
+  onEmailChange: (email: string) => void;
+  onPasswordChange: (password: string) => void;
+  onFullNameChange: (fullName: string) => void;
+}
+
+export function LoginFormView({
+  mode,
+  formData,
+  showPassword,
+  loading,
+  isDark,
+  onLogin,
+  onSignUp,
+  onForgotPassword,
+  onToggleMode,
+  onTogglePasswordVisibility,
+  onEmailChange,
+  onPasswordChange,
+  onFullNameChange,
+}: LoginFormViewProps) {
   const theme = getTheme(isDark);
   const backgroundColor = theme.background;
   const iconColor = theme.primary;
@@ -38,72 +62,37 @@ export function Login() {
   const primaryButtonBg = theme.primary;
   const textColor = theme.foreground;
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      validationError("Por favor, preencha todos os campos");
-      return;
-    }
-
-    const result = await signIn(email, password);
-
-    if (!result.success) {
-      authError(result.error?.message || "Erro ao fazer login");
-    }
-  };
-
-  const handleSignUp = async () => {
-    if (!email || !password || !fullName) {
-      validationError("Por favor, preencha todos os campos");
-      return;
-    }
-
-    if (password.length < 6) {
-      validationError("A senha deve ter pelo menos 6 caracteres");
-      return;
-    }
-
-    const result = await signUp(email, password, fullName);
-
-    if (result.success) {
-      authSuccess(
-        "Conta criada com sucesso! Verifique seu email para confirmar a conta."
-      );
-      setIsSignUpMode(false); // Voltar para o modo login
-    } else {
-      authError(result.error?.message || "Erro ao criar conta");
-    }
-  };
-
-  const handleForgotPassword = () => {
-    showInfo({
-      message: "Funcionalidade em desenvolvimento",
-      title: "Recuperar Senha",
-    });
-  };
-
-  const toggleMode = () => {
-    setIsSignUpMode(!isSignUpMode);
-    // Limpar campos ao trocar de modo
-    setEmail("");
-    setPassword("");
-    setFullName("");
-  };
+  const isSignUpMode = mode === "signup";
 
   return (
     <View
-      style={[styles.container, { backgroundColor }]}
+      style={{
+        flex: 1,
+        backgroundColor,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
       className="flex-1 bg-gray-1 dark:bg-dark-background w-full h-full"
     >
       {/* Header */}
       <View
-        style={[styles.header, { backgroundColor: backgroundColor }]}
+        style={{
+          padding: 20,
+          alignItems: "center",
+          backgroundColor,
+        }}
         className="p-5 items-center bg-card dark:bg-dark-card"
       >
         <View
-          style={[
-            styles.logoContainer,
-            { backgroundColor: inputBackgroundColor },
-          ]}
+          style={{
+            width: 96,
+            height: 96,
+            borderRadius: 48,
+            backgroundColor: inputBackgroundColor,
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: 16,
+          }}
           className="w-24 h-24 rounded-full bg-gray-3 dark:bg-dark-gray-5 justify-center items-center mb-4"
         >
           <PiggyBankIcon size={48} color={iconColor} />
@@ -118,30 +107,38 @@ export function Login() {
         </CustomText>
       </View>
 
-      {/* Formulário de Login */}
+      {/* Formulário */}
       <View className="w-full px-6">
         {/* Campo Nome Completo - apenas no modo cadastro */}
         {isSignUpMode && (
-          <View style={styles.inputGroup}>
+          <View style={{ marginBottom: 16 }}>
             <CustomText className="font-medium text-card-foreground dark:text-dark-card-foreground mb-2">
               Nome Completo
             </CustomText>
             <View
-              style={[
-                styles.inputContainer,
-                {
-                  backgroundColor: inputBackgroundColor,
-                  borderColor: borderColor,
-                },
-              ]}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: inputBackgroundColor,
+                borderColor,
+                borderWidth: 1,
+                borderRadius: 8,
+                paddingHorizontal: 12,
+                height: 48,
+              }}
             >
               <User size={20} color={iconColor} />
               <TextInput
-                style={[styles.input, { color: textColor }]}
+                style={{
+                  flex: 1,
+                  marginLeft: 8,
+                  color: textColor,
+                  fontSize: 16,
+                }}
                 placeholder="Digite seu nome completo"
                 placeholderTextColor={isDark ? "#9ca3af" : "#6b7280"}
-                value={fullName}
-                onChangeText={setFullName}
+                value={formData.fullName}
+                onChangeText={onFullNameChange}
                 autoCapitalize="words"
                 autoCorrect={false}
                 editable={!loading}
@@ -151,26 +148,34 @@ export function Login() {
         )}
 
         {/* Campo Email */}
-        <View style={styles.inputGroup}>
+        <View style={{ marginBottom: 16 }}>
           <CustomText className="font-medium text-card-foreground dark:text-dark-card-foreground mb-2">
             Email
           </CustomText>
           <View
-            style={[
-              styles.inputContainer,
-              {
-                backgroundColor: inputBackgroundColor,
-                borderColor: borderColor,
-              },
-            ]}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              backgroundColor: inputBackgroundColor,
+              borderColor,
+              borderWidth: 1,
+              borderRadius: 8,
+              paddingHorizontal: 12,
+              height: 48,
+            }}
           >
             <User size={20} color={iconColor} />
             <TextInput
-              style={[styles.input, { color: textColor }]}
+              style={{
+                flex: 1,
+                marginLeft: 8,
+                color: textColor,
+                fontSize: 16,
+              }}
               placeholder="Digite seu email"
               placeholderTextColor={isDark ? "#9ca3af" : "#6b7280"}
-              value={email}
-              onChangeText={setEmail}
+              value={formData.email}
+              onChangeText={onEmailChange}
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
@@ -180,34 +185,42 @@ export function Login() {
         </View>
 
         {/* Campo Senha */}
-        <View style={styles.inputGroup}>
+        <View style={{ marginBottom: 16 }}>
           <CustomText className="font-medium text-card-foreground dark:text-dark-card-foreground mb-2">
             Senha
           </CustomText>
           <View
-            style={[
-              styles.inputContainer,
-              {
-                backgroundColor: inputBackgroundColor,
-                borderColor: borderColor,
-              },
-            ]}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              backgroundColor: inputBackgroundColor,
+              borderColor,
+              borderWidth: 1,
+              borderRadius: 8,
+              paddingHorizontal: 12,
+              height: 48,
+            }}
           >
             <Lock size={20} color={iconColor} />
             <TextInput
-              style={[styles.input, { color: textColor }]}
+              style={{
+                flex: 1,
+                marginLeft: 8,
+                color: textColor,
+                fontSize: 16,
+              }}
               placeholder="Digite sua senha"
               placeholderTextColor={isDark ? "#9ca3af" : "#6b7280"}
-              value={password}
-              onChangeText={setPassword}
+              value={formData.password}
+              onChangeText={onPasswordChange}
               secureTextEntry={!showPassword}
               autoCapitalize="none"
               autoCorrect={false}
               editable={!loading}
             />
             <TouchableOpacity
-              onPress={() => setShowPassword(!showPassword)}
-              style={styles.eyeButton}
+              onPress={onTogglePasswordVisibility}
+              style={{ padding: 4 }}
               disabled={loading}
             >
               {showPassword ? (
@@ -222,8 +235,8 @@ export function Login() {
         {/* Esqueceu a senha - apenas no modo login */}
         {!isSignUpMode && (
           <TouchableOpacity
-            onPress={handleForgotPassword}
-            style={styles.forgotPasswordContainer}
+            onPress={onForgotPassword}
+            style={{ alignSelf: "flex-end", marginBottom: 24 }}
             disabled={loading}
           >
             <CustomText className="text-primary text-sm">
@@ -234,14 +247,17 @@ export function Login() {
 
         {/* Botão Principal */}
         <TouchableOpacity
-          style={[
-            styles.loginButton,
-            {
-              backgroundColor: primaryButtonBg,
-              opacity: loading ? 0.7 : 1,
-            },
-          ]}
-          onPress={isSignUpMode ? handleSignUp : handleLogin}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: primaryButtonBg,
+            borderRadius: 8,
+            height: 48,
+            marginTop: isSignUpMode ? 24 : 0,
+            opacity: loading ? 0.7 : 1,
+          }}
+          onPress={isSignUpMode ? onSignUp : onLogin}
           disabled={loading}
         >
           {loading ? (
@@ -261,11 +277,17 @@ export function Login() {
         </TouchableOpacity>
 
         {/* Alternância entre Login e Cadastro */}
-        <View style={styles.signupContainer}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            marginTop: 24,
+          }}
+        >
           <CustomText className="text-gray-11 dark:text-gray-4">
             {isSignUpMode ? "Já tem uma conta? " : "Não tem uma conta? "}
           </CustomText>
-          <TouchableOpacity onPress={toggleMode} disabled={loading}>
+          <TouchableOpacity onPress={onToggleMode} disabled={loading}>
             <CustomText className="text-primary font-medium">
               {isSignUpMode ? "Fazer Login" : "Cadastre-se"}
             </CustomText>
