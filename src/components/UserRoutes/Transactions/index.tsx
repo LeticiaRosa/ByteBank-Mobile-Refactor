@@ -4,7 +4,7 @@ import { styles } from "./styles";
 import { NewTransactionForm } from "./components/NewTransactionForm";
 import { Transaction } from "../../../lib/transactions";
 import { useState } from "react";
-import { useAllTransactions } from "../../../hooks/useTransactions";
+import { useTransactions } from "../../../hooks/useTransactions";
 
 export function Transactions() {
   const [editingTransaction, setEditingTransaction] =
@@ -18,7 +18,7 @@ export function Transactions() {
     updateTransaction,
     isCreating,
     isUpdating,
-  } = useAllTransactions();
+  } = useTransactions();
 
   // Função para lidar com a edição de transações
   // const handleEditTransaction = (transaction: Transaction) => {

@@ -8,6 +8,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { AuthState, AuthStatus, User } from "../../domain/auth/AuthState";
 
 export interface AuthAdapter {
+  user?: User | null;
   authState: AuthState;
   authStatus: AuthStatus;
   signIn: (email: string, password: string) => Promise<void>;
@@ -44,6 +45,7 @@ export function useAuthAdapter(): AuthAdapter {
   };
 
   return {
+    user,
     authState,
     authStatus,
     signIn: async (email: string, password: string) => {
