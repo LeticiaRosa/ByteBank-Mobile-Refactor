@@ -46,7 +46,7 @@ const Transactions = lazy(() => {
 const Profile = lazy(() => {
   const loadStart = performance.now();
   console.log("⏳ [Sidebar] Carregando Profile...");
-  return import("../Profile").then((m) => {
+  return import("../../../presentation/profile/Profile").then((m) => {
     const loadEnd = performance.now();
     console.log(
       `✅ [Sidebar] Profile carregado em ${(loadEnd - loadStart).toFixed(2)}ms`

@@ -162,14 +162,15 @@ export function ProfileView({
       <TouchableOpacity
         style={[
           {
+            borderWidth: 1,
             flexDirection: "row",
             alignItems: "center",
+            justifyContent: "center",
             gap: 12,
             padding: 16,
             margin: 20,
             borderRadius: 8,
             backgroundColor: logoutButtonBg,
-            borderWidth: 1,
             borderColor: iconColor,
           },
         ]}

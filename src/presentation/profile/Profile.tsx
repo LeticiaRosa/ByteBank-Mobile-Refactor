@@ -8,7 +8,7 @@
 import { useProfileAdapter } from "../../infrastructure/profile/useProfileAdapter";
 import { ProfileView } from "./ProfileView";
 
-export function ProfileContainer() {
+export function Profile() {
   // Obtém o estado e ações através do adapter
   const profileData = useProfileAdapter();
 
