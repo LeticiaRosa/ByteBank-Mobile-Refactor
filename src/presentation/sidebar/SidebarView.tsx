@@ -24,7 +24,7 @@ console.log("🚀 [Sidebar] Iniciando lazy load dos componentes");
 const Home = lazy(() => {
   const loadStart = performance.now();
   console.log("⏳ [Sidebar] Carregando Home...");
-  return import("../../components/UserRoutes/Home").then((m) => {
+  return import("../home/Home").then((m) => {
     const loadEnd = performance.now();
     console.log(
       `✅ [Sidebar] Home carregado em ${(loadEnd - loadStart).toFixed(2)}ms`
