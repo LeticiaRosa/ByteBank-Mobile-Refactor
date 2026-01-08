@@ -20,7 +20,7 @@ import {
   PiggyBankIcon,
 } from "lucide-react-native";
 import { getTheme } from "../../styles/theme";
-import { CustomText } from "../../components/ui/Text";
+import { CustomText } from "../ui/Text";
 import { LoginMode, LoginFormData } from "../../domain/login/LoginState";
 
 interface LoginFormViewProps {

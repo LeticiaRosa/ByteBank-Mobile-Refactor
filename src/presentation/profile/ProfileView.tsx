@@ -16,7 +16,7 @@ import {
   Bell,
   HelpCircle,
 } from "lucide-react-native";
-import { CustomText } from "../../components/ui/Text";
+import { CustomText } from "../ui/Text";
 import {
   ProfileState,
   ProfileActions,

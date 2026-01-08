@@ -2,7 +2,7 @@ import "./global.css";
 import { ThemeProvider } from "./src/hooks/useTheme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
-import { toastConfig } from "./src/components/ui/ToastConfig";
+import { toastConfig } from "./src/presentation/ui/ToastConfig";
 import { AuthForm } from "./src/presentation/auth/AuthForm";
 
 // Criar instância do QueryClient

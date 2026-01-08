@@ -7,7 +7,7 @@
 
 import { TouchableOpacity, View, Animated } from "react-native";
 import { Eye, EyeOff } from "lucide-react-native";
-import { CustomText } from "../../../components/ui/Text";
+import { CustomText } from "../../ui/Text";
 import type { AccountInfosViewState } from "../../../domain/home/components";
 
 export function AccountInfosView({

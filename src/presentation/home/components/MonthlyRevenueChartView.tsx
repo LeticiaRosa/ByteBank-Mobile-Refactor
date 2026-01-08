@@ -6,7 +6,7 @@
 
 import { View, Dimensions, ScrollView } from "react-native";
 import { BarChart } from "react-native-chart-kit";
-import { CustomText } from "../../../components/ui/Text";
+import { CustomText } from "../../ui/Text";
 
 const screenWidth = Dimensions.get("window").width;
 

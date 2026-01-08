@@ -6,7 +6,7 @@
 
 import { View, Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import { CustomText } from "../../../components/ui/Text";
+import { CustomText } from "../../ui/Text";
 
 const screenWidth = Dimensions.get("window").width;
 

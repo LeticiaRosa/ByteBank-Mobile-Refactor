@@ -14,7 +14,7 @@ import {
   Modal,
 } from "react-native";
 import { getTheme } from "../../styles/theme";
-import { ConfirmDeleteModal } from "../../components/ui/ConfirmDeleteModal";
+import { ConfirmDeleteModal } from "../ui/ConfirmDeleteModal";
 import { TransactionForm } from "../transaction-form/TransactionForm";
 import {
   TransactionItem,

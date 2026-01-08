@@ -8,7 +8,7 @@ import { useState, useRef } from "react";
 import { Animated } from "react-native";
 import { useTheme } from "../../../hooks/useTheme";
 import { getTheme } from "../../../styles/theme";
-import { useSkeletonAnimation } from "../../../components/ui/FadeInView";
+import { useSkeletonAnimation } from "../../../presentation/ui";
 import {
   AccountInfosProps,
   AccountInfosViewState,

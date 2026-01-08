@@ -6,8 +6,8 @@
 
 import { View, Dimensions } from "react-native";
 import { PieChart } from "react-native-chart-kit";
-import { CustomText } from "../../../components/ui/Text";
-import { FadeInView } from "../../../components/ui/FadeInView";
+import { CustomText } from "../../ui/Text";
+import { FadeInView } from "../../ui/FadeInView";
 
 const screenWidth = Dimensions.get("window").width;
 
