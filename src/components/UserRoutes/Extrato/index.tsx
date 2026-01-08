@@ -15,7 +15,6 @@ import { useTheme } from "../../../hooks/useTheme";
 import { useToast } from "../../../hooks/useToast";
 import { getTheme } from "../../../styles/theme";
 import { ConfirmDeleteModal } from "../../ui/ConfirmDeleteModal";
-import { NewTransactionForm } from "../Transactions/components/NewTransactionForm";
 // Importação de tipos
 import type {
   Transaction,
@@ -28,6 +27,7 @@ import {
   type FilterOptions,
 } from "./components";
 import { SimplePagination } from "./components/SimplePagination";
+import { TransactionForm } from "../../../presentation/transaction-form/TransactionForm";
 
 const PAGE_SIZE = 10;
 
@@ -378,7 +378,7 @@ export function ExtractPage() {
         onRequestClose={handleCloseEditModal}
       >
         <View style={dynamicStyles.modalContainer}>
-          <NewTransactionForm
+          <TransactionForm
             primaryAccount={
               bankAccounts?.find((acc) => acc.user_id === user?.id) || null
             }
