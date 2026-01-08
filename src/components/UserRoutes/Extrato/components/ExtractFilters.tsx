@@ -13,18 +13,11 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useTheme } from "../../../../hooks/useTheme";
 import { getTheme, getColorScale } from "../../../../styles/theme";
+import type { FilterOptions } from "../../../../domain/extrato/ExtratoState";
+import { DEFAULT_FILTERS } from "../../../../domain/extrato/ExtratoState";
 
-export interface FilterOptions {
-  dateFrom: string;
-  dateTo: string;
-  transactionType: string;
-  status: string;
-  minAmount: string;
-  maxAmount: string;
-  description: string;
-  category: string;
-  senderName: string;
-}
+// Re-exportar para compatibilidade
+export type { FilterOptions };
 
 interface ExtractFiltersProps {
   onFilterChange: (filters: FilterOptions) => void;
@@ -236,17 +229,7 @@ export function ExtractFilters({
   const colorScale = getColorScale(isDark);
   const placeholderColor = colorScale.gray[10];
 
-  const [filters, setFilters] = useState<FilterOptions>({
-    dateFrom: "",
-    dateTo: "",
-    transactionType: "all",
-    status: "all",
-    minAmount: "",
-    maxAmount: "",
-    description: "",
-    category: "all",
-    senderName: "",
-  });
+  const [filters, setFilters] = useState<FilterOptions>(DEFAULT_FILTERS);
 
   // Estados para controlar os modais e seleções
   const [isExpanded, setIsExpanded] = useState(false);
@@ -282,18 +265,7 @@ export function ExtractFilters({
   };
 
   const handleReset = () => {
-    const resetFilters: FilterOptions = {
-      dateFrom: "",
-      dateTo: "",
-      transactionType: "all",
-      status: "all",
-      minAmount: "",
-      maxAmount: "",
-      description: "",
-      category: "all",
-      senderName: "",
-    };
-    setFilters(resetFilters);
+    setFilters(DEFAULT_FILTERS);
     onReset();
   };
 

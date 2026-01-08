@@ -36,7 +36,7 @@ const Home = lazy(() => {
 const Transactions = lazy(() => {
   const loadStart = performance.now();
   console.log("⏳ [Sidebar] Carregando Transactions...");
-  return import("../../components/UserRoutes/Transactions").then((m) => {
+  return import("../transactions/Transactions").then((m) => {
     const loadEnd = performance.now();
     console.log(
       `✅ [Sidebar] Transactions carregado em ${(loadEnd - loadStart).toFixed(
@@ -62,14 +62,14 @@ const Profile = lazy(() => {
 const ExtractPage = lazy(() => {
   const loadStart = performance.now();
   console.log("⏳ [Sidebar] Carregando ExtractPage...");
-  return import("../../components/UserRoutes/Extrato").then((m) => {
+  return import("../extrato/Extrato").then((m) => {
     const loadEnd = performance.now();
     console.log(
       `✅ [Sidebar] ExtractPage carregado em ${(loadEnd - loadStart).toFixed(
         2
       )}ms`
     );
-    return { default: m.ExtractPage };
+    return { default: m.Extrato };
   });
 });
 
