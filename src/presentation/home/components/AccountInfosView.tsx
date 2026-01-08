@@ -1,13 +1,16 @@
-import { useState, useRef } from "react";
-import { Eye, EyeOff } from "lucide-react-native";
-import { TouchableOpacity, View, Animated } from "react-native";
-import { CustomText } from "../../../ui/Text";
-import { useTheme } from "../../../../hooks/useTheme";
-import { getTheme } from "../../../../styles/theme";
-import { ReactNode } from "react";
-import { useSkeletonAnimation } from "../../../ui/FadeInView";
+/**
+ * Presentation Layer - Account Infos View
+ * Componente de apresentação puro (stateless)
+ * Responsável apenas pela renderização visual
+ * Segue o princípio de Responsabilidade Única (S do SOLID)
+ */
 
-interface AccountProps {
+import { TouchableOpacity, View, Animated } from "react-native";
+import { Eye, EyeOff } from "lucide-react-native";
+import { CustomText } from "../../../components/ui/Text";
+import { ReactNode } from "react";
+
+interface AccountInfosViewProps {
   title?: string;
   amount: number;
   text?: string;
@@ -16,97 +19,61 @@ interface AccountProps {
   colorType?: "primary" | "success" | "destructive";
   formatType?: "currency" | "number";
   icon?: ReactNode;
-  isRealtimeConnected?: boolean; // Novo: indicador de conexão real-time
+  isRealtimeConnected?: boolean;
+
+  // Estados e handlers
+  isBalanceVisible: boolean;
+  onToggleBalance: () => void;
+  onPressIn: () => void;
+  onPressOut: () => void;
+
+  // Estilos e animações
+  scaleAnim: Animated.Value;
+  opacityAnim: Animated.Value;
+  skeletonStyle: any;
+
+  // Tema
+  cardBackgroundColor: string;
+  cardForegroundColor: string;
+  iconColor: string;
+  borderColor: string;
+  mutedColor: string;
+
+  // Funções de formatação
+  formatValue: (value: number) => string;
+  getAmountColorClass: () => string;
 }
 
-export function AccountInfos({
+export function AccountInfosView({
   title,
   amount,
   text,
   isLoadingAccounts,
   showeye = true,
-  colorType = "primary",
-  formatType = "currency",
   icon,
-  isRealtimeConnected = false, // Novo: indicador de conexão real-time
-}: AccountProps) {
-  const [isBalanceVisible, setIsBalanceVisible] = useState(true);
-
-  // Animações para transições suaves
-  const scaleAnim = useRef(new Animated.Value(1)).current;
-  const opacityAnim = useRef(new Animated.Value(1)).current;
-
-  const { isDark } = useTheme();
-  const theme = getTheme(isDark);
-
-  const cardForegroundColor = theme.cardForeground;
-  const cardBackgroundColor = theme.card;
-  const iconColor = theme.secondaryForeground;
-
-  const toggleBalanceVisibility = () => {
-    // Animação de "piscar" ao alternar visibilidade
-    Animated.sequence([
-      Animated.timing(opacityAnim, {
-        toValue: 0.3,
-        duration: 150,
-        useNativeDriver: true,
-      }),
-      Animated.timing(opacityAnim, {
-        toValue: 1,
-        duration: 150,
-        useNativeDriver: true,
-      }),
-    ]).start();
-
-    setIsBalanceVisible(!isBalanceVisible);
-  };
-
-  const handlePressIn = () => {
-    Animated.spring(scaleAnim, {
-      toValue: 0.98,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const handlePressOut = () => {
-    Animated.spring(scaleAnim, {
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const formatValue = (value: number) => {
-    if (formatType === "number") {
-      return value.toLocaleString("pt-BR");
-    }
-
-    return value.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-  };
-
-  const getAmountColorClass = () => {
-    switch (colorType) {
-      case "success":
-        return "text-green-600 dark:text-green-400";
-      case "destructive":
-        return "text-red-600 dark:text-red-400";
-      default:
-        return "text-primary";
-    }
-  };
-
-  // Hook para animação de skeleton
-  const skeletonStyle = useSkeletonAnimation();
-
+  isRealtimeConnected = false,
+  isBalanceVisible,
+  onToggleBalance,
+  onPressIn,
+  onPressOut,
+  scaleAnim,
+  opacityAnim,
+  skeletonStyle,
+  cardBackgroundColor,
+  cardForegroundColor,
+  iconColor,
+  borderColor,
+  mutedColor,
+  formatValue,
+  getAmountColorClass,
+}: AccountInfosViewProps) {
   if (isLoadingAccounts) {
     return (
       <Animated.View
         style={[
           {
             backgroundColor: cardBackgroundColor,
-            borderColor: theme.border,
+            borderColor: borderColor,
           },
           skeletonStyle,
         ]}
@@ -117,7 +84,7 @@ export function AccountInfos({
             <Animated.View
               style={[
                 {
-                  backgroundColor: theme.muted,
+                  backgroundColor: mutedColor,
                   width: 48,
                   height: 48,
                   borderRadius: 24,
@@ -129,7 +96,7 @@ export function AccountInfos({
               <Animated.View
                 style={[
                   {
-                    backgroundColor: theme.muted,
+                    backgroundColor: mutedColor,
                     height: 16,
                     width: 80,
                     borderRadius: 4,
@@ -141,7 +108,7 @@ export function AccountInfos({
               <Animated.View
                 style={[
                   {
-                    backgroundColor: theme.muted,
+                    backgroundColor: mutedColor,
                     height: 20,
                     width: 120,
                     borderRadius: 4,
@@ -154,7 +121,7 @@ export function AccountInfos({
           <Animated.View
             style={[
               {
-                backgroundColor: theme.muted,
+                backgroundColor: mutedColor,
                 width: 32,
                 height: 32,
                 borderRadius: 16,
@@ -166,6 +133,7 @@ export function AccountInfos({
       </Animated.View>
     );
   }
+
   if (amount < 0) {
     return null;
   }
@@ -175,11 +143,11 @@ export function AccountInfos({
       style={[
         {
           backgroundColor: cardBackgroundColor,
-          borderColor: theme.border,
+          borderColor: borderColor,
           transform: [{ scale: scaleAnim }],
         },
       ]}
-      className="rounded-lg shadow-sm border p-4 w-full border-gray-1 "
+      className="rounded-lg shadow-sm border p-4 w-full border-gray-1"
     >
       <View className="flex flex-row justify-between items-start">
         <View className="flex flex-row items-center pl-2 gap-2">
@@ -191,7 +159,7 @@ export function AccountInfos({
                   transform: [{ scale: scaleAnim }],
                 },
               ]}
-              className=" w-12 h-12 items-center justify-center rounded-full"
+              className="w-12 h-12 items-center justify-center rounded-full"
             >
               {icon}
             </Animated.View>
@@ -201,12 +169,11 @@ export function AccountInfos({
               <CustomText className="font-semibold text-card-foreground text-md">
                 {title}
               </CustomText>
-              {/* Indicador de conexão real-time */}
               {isRealtimeConnected && (
                 <View
                   className="w-2 h-2 rounded-full"
                   style={{
-                    backgroundColor: "#10b981", // green-500
+                    backgroundColor: "#10b981",
                   }}
                 />
               )}
@@ -223,9 +190,9 @@ export function AccountInfos({
         {showeye && (
           <View className="flex justify-end">
             <TouchableOpacity
-              onPress={toggleBalanceVisibility}
-              onPressIn={handlePressIn}
-              onPressOut={handlePressOut}
+              onPress={onToggleBalance}
+              onPressIn={onPressIn}
+              onPressOut={onPressOut}
               className="h-8 w-8"
             >
               {isBalanceVisible ? (

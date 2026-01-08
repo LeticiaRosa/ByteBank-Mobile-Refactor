@@ -14,7 +14,18 @@ src/
 │
 └── presentation/home/
     ├── Home.tsx                     # Container
-    └── HomeView.tsx                 # View stateless
+    ├── HomeView.tsx                 # View stateless
+    └── components/                  # Componentes do dashboard
+        ├── AccountInfos.tsx         # Container de info de conta
+        ├── AccountInfosView.tsx     # View pura de info de conta
+        ├── BalanceChart.tsx         # Container do gráfico de saldo
+        ├── BalanceChartView.tsx     # View pura do gráfico de saldo
+        ├── ExpensesPieChart.tsx     # Container do gráfico de gastos
+        ├── ExpensesPieChartView.tsx # View pura do gráfico de gastos
+        ├── MonthlyRevenueChart.tsx  # Container do gráfico de receitas
+        ├── MonthlyRevenueChartView.tsx # View pura do gráfico de receitas
+        ├── index.ts                 # Barrel export
+        └── README.md                # Documentação dos componentes
 ```
 
 ## 🎯 Componente Home

@@ -10,10 +10,12 @@ import { Wallet, TrendingDown, TrendingUp } from "lucide-react-native";
 import { useTheme } from "../../hooks/useTheme";
 import { getTheme, colors } from "../../styles/theme";
 import { MoneyUtils } from "../../utils";
-import { AccountInfos } from "../../components/UserRoutes/Home/components/AccountInfos";
-import { BalanceChart } from "../../components/UserRoutes/Home/components/BalanceChart";
-import { ExpensesPieChart } from "../../components/UserRoutes/Home/components/ExpensesPieChart";
-import { MonthlyRevenueChart } from "../../components/UserRoutes/Home/components/MonthlyRevenueChart";
+import {
+  AccountInfos,
+  BalanceChart,
+  ExpensesPieChart,
+  MonthlyRevenueChart,
+} from "./components";
 import type { HomeState, HomeActions } from "../../domain/home/HomeState";
 
 interface HomeViewProps {
@@ -129,5 +131,6 @@ const styles = StyleSheet.create({
   },
   cardsContainer: {
     padding: 16,
+    gap: 16,
   },
 });

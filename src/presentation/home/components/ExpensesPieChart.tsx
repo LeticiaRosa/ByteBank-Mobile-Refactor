@@ -1,17 +1,19 @@
-import { View, Dimensions } from "react-native";
-import { PieChart } from "react-native-chart-kit";
-import { CustomText } from "../../../ui/Text";
-import { useTheme } from "../../../../hooks/useTheme";
-import { getTheme, getChartPieColors } from "../../../../styles/theme";
-import { useExpensesByCategory } from "../../../../hooks/useDashboardsCharts";
-import { FadeInView } from "../../../ui/FadeInView";
+/**
+ * Presentation Layer - Expenses Pie Chart Container
+ * Container com lógica de dados e configuração
+ * Delega renderização para ExpensesPieChartView
+ */
 
-const screenWidth = Dimensions.get("window").width;
+import { useTheme } from "../../../hooks/useTheme";
+import { getTheme, getChartPieColors } from "../../../styles/theme";
+import { useExpensesByCategory } from "../../../hooks/useDashboardsCharts";
+import { ExpensesPieChartView } from "./ExpensesPieChartView";
 
 export function ExpensesPieChart() {
   const { isDark } = useTheme();
   const theme = getTheme(isDark);
   const chartColors = getChartPieColors(isDark);
+
   const {
     data: expensesData,
     isLoading,
@@ -78,49 +80,17 @@ export function ExpensesPieChart() {
     },
   };
 
-  return (
-    <FadeInView delay={300} direction="up" duration={800}>
-      <View
-        style={{
-          backgroundColor: theme.card,
-          borderRadius: 12,
-          padding: 16,
-          marginBottom: 16,
-          borderWidth: 1,
-          borderColor: theme.border,
-        }}
-      >
-        <CustomText className="text-lg font-semibold text-card-foreground mb-4">
-          Gastos por Categoria
-        </CustomText>
+  const hasData = chartData.length > 0;
 
-        {isLoading ? (
-          <CustomText className="text-muted-foreground text-center py-8">
-            Carregando dados...
-          </CustomText>
-        ) : error ? (
-          <CustomText className="text-red-500 text-center py-8">
-            Erro ao carregar dados
-          </CustomText>
-        ) : chartData.length === 0 ? (
-          <CustomText className="text-muted-foreground text-center py-8">
-            Nenhum gasto encontrado
-          </CustomText>
-        ) : (
-          <FadeInView delay={600} direction="up" duration={600}>
-            <PieChart
-              data={chartData}
-              width={screenWidth - 64}
-              height={180}
-              chartConfig={chartConfig}
-              accessor="population"
-              backgroundColor="transparent"
-              paddingLeft="0"
-              absolute={false} // Mostra valores absolutos ao invés de percentuais
-            />
-          </FadeInView>
-        )}
-      </View>
-    </FadeInView>
+  return (
+    <ExpensesPieChartView
+      chartData={chartData}
+      chartConfig={chartConfig}
+      isLoading={isLoading}
+      error={error}
+      hasData={hasData}
+      cardBackgroundColor={theme.card}
+      borderColor={theme.border}
+    />
   );
 }
