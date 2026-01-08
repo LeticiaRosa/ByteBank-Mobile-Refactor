@@ -1,6 +1,13 @@
+/**
+ * Presentation Layer - SimplePagination
+ *
+ * Componente visual stateless para controles de paginação.
+ * Componente já é puro, apenas movido para apresentação.
+ */
+
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { useTheme } from "../../../../hooks/useTheme";
-import { getTheme, getColorScale } from "../../../../styles/theme";
+import { useTheme } from "../../../hooks/useTheme";
+import { getTheme, getColorScale } from "../../../styles/theme";
 
 interface SimplePaginationProps {
   currentPage: number;

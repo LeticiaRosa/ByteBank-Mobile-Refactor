@@ -19,8 +19,8 @@ import { TransactionForm } from "../transaction-form/TransactionForm";
 import {
   TransactionItem,
   ExtractFilters,
-} from "../../components/UserRoutes/Extrato/components";
-import { SimplePagination } from "../../components/UserRoutes/Extrato/components/SimplePagination";
+  SimplePagination,
+} from "./components";
 import type {
   ExtratoState,
   ExtratoActions,

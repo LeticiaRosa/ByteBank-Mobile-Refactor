@@ -1,27 +1,34 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import { useState } from "react";
-import { Transaction } from "../../../../lib/transactions";
-import { useTheme } from "../../../../hooks/useTheme";
-import { getTheme, getColorScale, colors } from "../../../../styles/theme";
-import { MoneyUtils } from "../../../../utils";
+/**
+ * Presentation Layer - TransactionItem View
+ *
+ * Componente visual stateless para renderizar um item de transação.
+ * Segue o princípio de Responsabilidade Única (S do SOLID).
+ */
 
-interface TransactionItemProps {
+import { View, Text, TouchableOpacity } from "react-native";
+import { Transaction } from "../../../lib/transactions";
+import { getTheme, getColorScale, colors } from "../../../styles/theme";
+import { MoneyUtils } from "../../../utils";
+
+interface TransactionItemViewProps {
   transaction: Transaction;
-  onEdit?: (transaction: Transaction) => void;
-  onDelete?: (transactionId: string) => void;
-  onProcess?: (transactionId: string, action: "complete" | "fail") => void;
+  isDark: boolean;
+  isMenuVisible: boolean;
+  onToggleMenu: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  onProcess?: (action: "complete" | "fail") => void;
 }
 
-export function TransactionItem({
+export function TransactionItemView({
   transaction,
+  isDark,
+  isMenuVisible,
+  onToggleMenu,
   onEdit,
   onDelete,
   onProcess,
-}: TransactionItemProps) {
-  const { isDark } = useTheme();
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
-
-  // Cores dinâmicas baseadas no tema centralizado
+}: TransactionItemViewProps) {
   const theme = getTheme(isDark);
   const colorScale = getColorScale(isDark);
 
@@ -31,7 +38,6 @@ export function TransactionItem({
     textPrimary: theme.foreground,
     textSecondary: theme.mutedForeground,
     textMuted: colorScale.gray[10],
-    // Cores dos badges usando sistema de cores de charts
     depositBg: isDark ? colorScale.gray[3] : colorScale.gray[2],
     depositText: colors.charts.main.green,
     withdrawalBg: isDark ? colorScale.gray[3] : colorScale.gray[2],
@@ -42,7 +48,6 @@ export function TransactionItem({
     paymentText: colors.charts.main.orange,
     categoryBg: theme.accent,
     categoryText: theme.accentForeground,
-    // Status colors usando sistema de cores
     completedBg: isDark ? colorScale.gray[3] : colorScale.gray[2],
     completedText: colors.charts.main.green,
     pendingBg: isDark ? colorScale.gray[3] : colorScale.gray[2],
@@ -98,12 +103,38 @@ export function TransactionItem({
     return categories[category as keyof typeof categories] || category;
   };
 
-  // Removemos os métodos de cores de estilo baseados em classes CSS
-  // já que agora estamos usando estilos inline do React Native
-
   const getAmountPrefix = (type: string) => {
     return type === "deposit" ? "+" : "-";
   };
+
+  const getTransactionIcon = () => {
+    const iconColor = {
+      deposit: "#16a34a",
+      withdrawal: "#dc2626",
+      transfer: "#2563eb",
+      payment: "#ea580c",
+      fee: "#71717a",
+    };
+
+    const iconSymbol = {
+      deposit: "↑",
+      withdrawal: "↓",
+      transfer: "→",
+      payment: "$",
+      fee: "!",
+    };
+
+    return {
+      color:
+        iconColor[transaction.transaction_type as keyof typeof iconColor] ||
+        "#71717a",
+      symbol:
+        iconSymbol[transaction.transaction_type as keyof typeof iconSymbol] ||
+        "?",
+    };
+  };
+
+  const icon = getTransactionIcon();
 
   return (
     <View
@@ -118,7 +149,6 @@ export function TransactionItem({
         shadowRadius: 4,
         elevation: 3,
       }}
-      // onPress={() => onEdit && onEdit(transaction)}
     >
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flexDirection: "row", flex: 1, gap: 16 }}>
@@ -133,21 +163,9 @@ export function TransactionItem({
               justifyContent: "center",
             }}
           >
-            {transaction.transaction_type === "deposit" && (
-              <Text style={{ fontSize: 20, color: "#16a34a" }}>↑</Text>
-            )}
-            {transaction.transaction_type === "withdrawal" && (
-              <Text style={{ fontSize: 20, color: "#dc2626" }}>↓</Text>
-            )}
-            {transaction.transaction_type === "transfer" && (
-              <Text style={{ fontSize: 20, color: "#2563eb" }}>→</Text>
-            )}
-            {transaction.transaction_type === "payment" && (
-              <Text style={{ fontSize: 20, color: "#ea580c" }}>$</Text>
-            )}
-            {transaction.transaction_type === "fee" && (
-              <Text style={{ fontSize: 20, color: "#71717a" }}>!</Text>
-            )}
+            <Text style={{ fontSize: 20, color: icon.color }}>
+              {icon.symbol}
+            </Text>
           </View>
 
           {/* Informações da transação */}
@@ -309,7 +327,7 @@ export function TransactionItem({
                 alignItems: "center",
                 justifyContent: "center",
               }}
-              onPress={() => setIsMenuVisible(!isMenuVisible)}
+              onPress={onToggleMenu}
             >
               <Text
                 style={{
@@ -336,7 +354,7 @@ export function TransactionItem({
                     bottom: 0,
                     zIndex: 9999,
                   }}
-                  onPress={() => setIsMenuVisible(false)}
+                  onPress={onToggleMenu}
                   activeOpacity={1}
                 />
 
@@ -344,7 +362,7 @@ export function TransactionItem({
                 <View
                   style={{
                     position: "absolute",
-                    top: 40, // Logo abaixo do botão de três pontos
+                    top: 40,
                     right: 0,
                     backgroundColor: transactionColors.cardBackground,
                     borderRadius: 8,
@@ -370,10 +388,7 @@ export function TransactionItem({
                         alignItems: "center",
                         gap: 8,
                       }}
-                      onPress={() => {
-                        setIsMenuVisible(false);
-                        onEdit(transaction);
-                      }}
+                      onPress={onEdit}
                     >
                       <Text
                         style={{
@@ -396,10 +411,7 @@ export function TransactionItem({
                         alignItems: "center",
                         gap: 8,
                       }}
-                      onPress={() => {
-                        setIsMenuVisible(false);
-                        onDelete(transaction.id);
-                      }}
+                      onPress={onDelete}
                     >
                       <Text
                         style={{
@@ -440,7 +452,7 @@ export function TransactionItem({
                   borderRadius: 4,
                   backgroundColor: colors.charts.main.green + "20",
                 }}
-                onPress={() => onProcess(transaction.id, "complete")}
+                onPress={() => onProcess("complete")}
               >
                 <Text
                   style={{
@@ -460,7 +472,7 @@ export function TransactionItem({
                   backgroundColor:
                     colors.destructive[isDark ? "dark" : "light"] + "20",
                 }}
-                onPress={() => onProcess(transaction.id, "fail")}
+                onPress={() => onProcess("fail")}
               >
                 <Text
                   style={{
