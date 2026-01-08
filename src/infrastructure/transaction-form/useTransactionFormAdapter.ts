@@ -81,7 +81,8 @@ export function useTransactionFormAdapter({
   const getInitialFormData = (): TransactionFormData => {
     if (isEditing && editingTransaction) {
       const toAccount = findAccountById(editingTransaction.to_account_id);
-      const amount = editingTransaction.amount;
+      const amount = editingTransaction.amount / 100;
+      console.log("Editing Transaction Amount:", amount);
       return {
         transaction_type: editingTransaction.transaction_type,
         amount: amount.toLocaleString("pt-BR", {
