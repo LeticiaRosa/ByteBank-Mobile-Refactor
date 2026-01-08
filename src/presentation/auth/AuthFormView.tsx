@@ -7,8 +7,8 @@
 
 import { View, ActivityIndicator } from "react-native";
 import { AuthStatus } from "../../domain/auth/AuthState";
-import { UserRoutes } from "../../components/UserRoutes";
 import { LoginForm } from "../login/LoginForm";
+import { AuthenticatedApp } from "../app/AuthenticatedApp";
 
 interface AuthFormViewProps {
   authStatus: AuthStatus;
@@ -33,7 +33,7 @@ export function AuthFormView({ authStatus }: AuthFormViewProps) {
 
   // Usuário autenticado - mostra rotas do usuário
   if (authStatus === "authenticated") {
-    return <UserRoutes />;
+    return <AuthenticatedApp />;
   }
 
   // Usuário não autenticado - mostra tela de login
