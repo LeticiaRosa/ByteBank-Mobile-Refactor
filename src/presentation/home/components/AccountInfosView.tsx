@@ -8,41 +8,7 @@
 import { TouchableOpacity, View, Animated } from "react-native";
 import { Eye, EyeOff } from "lucide-react-native";
 import { CustomText } from "../../../components/ui/Text";
-import { ReactNode } from "react";
-
-interface AccountInfosViewProps {
-  title?: string;
-  amount: number;
-  text?: string;
-  isLoadingAccounts: boolean;
-  showeye?: boolean;
-  colorType?: "primary" | "success" | "destructive";
-  formatType?: "currency" | "number";
-  icon?: ReactNode;
-  isRealtimeConnected?: boolean;
-
-  // Estados e handlers
-  isBalanceVisible: boolean;
-  onToggleBalance: () => void;
-  onPressIn: () => void;
-  onPressOut: () => void;
-
-  // Estilos e animações
-  scaleAnim: Animated.Value;
-  opacityAnim: Animated.Value;
-  skeletonStyle: any;
-
-  // Tema
-  cardBackgroundColor: string;
-  cardForegroundColor: string;
-  iconColor: string;
-  borderColor: string;
-  mutedColor: string;
-
-  // Funções de formatação
-  formatValue: (value: number) => string;
-  getAmountColorClass: () => string;
-}
+import type { AccountInfosViewState } from "../../../domain/home/components";
 
 export function AccountInfosView({
   title,
@@ -53,20 +19,24 @@ export function AccountInfosView({
   icon,
   isRealtimeConnected = false,
   isBalanceVisible,
-  onToggleBalance,
-  onPressIn,
-  onPressOut,
+  toggleBalanceVisibility,
+  handlePressIn,
+  handlePressOut,
   scaleAnim,
   opacityAnim,
   skeletonStyle,
-  cardBackgroundColor,
-  cardForegroundColor,
-  iconColor,
-  borderColor,
-  mutedColor,
+  theme,
   formatValue,
   getAmountColorClass,
-}: AccountInfosViewProps) {
+}: AccountInfosViewState) {
+  const {
+    cardBackgroundColor,
+    cardForegroundColor,
+    iconColor,
+    borderColor,
+    mutedColor,
+  } = theme;
+
   if (isLoadingAccounts) {
     return (
       <Animated.View
@@ -190,9 +160,9 @@ export function AccountInfosView({
         {showeye && (
           <View className="flex justify-end">
             <TouchableOpacity
-              onPress={onToggleBalance}
-              onPressIn={onPressIn}
-              onPressOut={onPressOut}
+              onPress={toggleBalanceVisibility}
+              onPressIn={handlePressIn}
+              onPressOut={handlePressOut}
               className="h-8 w-8"
             >
               {isBalanceVisible ? (

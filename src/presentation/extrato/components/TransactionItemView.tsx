@@ -1,24 +1,14 @@
 /**
  * Presentation Layer - TransactionItem View
- *
- * Componente visual stateless para renderizar um item de transação.
- * Segue o princípio de Responsabilidade Única (S do SOLID).
+ * Componente de apresentação puro (stateless)
+ * Responsável apenas pela renderização visual
+ * Segue o princípio de Responsabilidade Única (S do SOLID)
  */
 
 import { View, Text, TouchableOpacity } from "react-native";
-import { Transaction } from "../../../lib/transactions";
 import { getTheme, getColorScale, colors } from "../../../styles/theme";
 import { MoneyUtils } from "../../../utils";
-
-interface TransactionItemViewProps {
-  transaction: Transaction;
-  isDark: boolean;
-  isMenuVisible: boolean;
-  onToggleMenu: () => void;
-  onEdit?: () => void;
-  onDelete?: () => void;
-  onProcess?: (action: "complete" | "fail") => void;
-}
+import type { TransactionItemViewState } from "../../../domain/extrato/components";
 
 export function TransactionItemView({
   transaction,
@@ -28,7 +18,7 @@ export function TransactionItemView({
   onEdit,
   onDelete,
   onProcess,
-}: TransactionItemViewProps) {
+}: TransactionItemViewState) {
   const theme = getTheme(isDark);
   const colorScale = getColorScale(isDark);
 

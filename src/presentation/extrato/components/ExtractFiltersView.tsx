@@ -1,7 +1,8 @@
 /**
  * Presentation Layer - ExtractFilters View
- *
- * Componente visual stateless para renderizar filtros.
+ * Componente de apresentação puro (stateless)
+ * Responsável apenas pela renderização visual
+ * Segue o princípio de Responsabilidade Única (S do SOLID)
  */
 
 import {
@@ -16,24 +17,12 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useTheme } from "../../../hooks/useTheme";
 import { getTheme, getColorScale } from "../../../styles/theme";
-import type { FilterOptions } from "../../../domain/extrato/ExtratoState";
 import { EXTRATO_CONSTANTS } from "../../../domain/extrato/ExtratoState";
-import type {
-  FiltersModalState,
-  FiltersActions,
-} from "../../../domain/extrato/FiltersState";
-import { FILTER_OPTIONS } from "../../../domain/extrato/FiltersState";
+import type { ExtractFiltersViewState } from "../../../domain/extrato/components";
+import { FILTER_OPTIONS } from "../../../domain/extrato/components";
 
 const { TRANSACTION_CATEGORIES } = EXTRATO_CONSTANTS;
 const { TRANSACTION_TYPES, STATUS_OPTIONS } = FILTER_OPTIONS;
-
-interface ExtractFiltersViewProps {
-  filters: FilterOptions;
-  isExpanded: boolean;
-  modalsState: FiltersModalState;
-  actions: FiltersActions;
-  formatDisplayDate: (dateString: string) => string;
-}
 
 export function ExtractFiltersView({
   filters,
@@ -41,7 +30,7 @@ export function ExtractFiltersView({
   modalsState,
   actions,
   formatDisplayDate,
-}: ExtractFiltersViewProps) {
+}: ExtractFiltersViewState) {
   const { isDark } = useTheme();
   const dynamicStyles = createStyles(isDark);
   const colorScale = getColorScale(isDark);

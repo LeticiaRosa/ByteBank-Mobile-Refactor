@@ -1,27 +1,16 @@
 /**
- * Presentation Layer - TransactionItem Container
- *
- * Container que conecta o adapter ao view.
+ * Presentation Layer - TransactionItem
+ * Componente de apresentação que usa adapter da infrastructure
+ * Delega renderização para TransactionItemView
  */
 
-import { useTheme } from "../../../hooks/useTheme";
-import { useTransactionItemAdapter } from "../../../infrastructure/extrato/useTransactionItemAdapter";
+import { useTransactionItemAdapter } from "../../../infrastructure/extrato/components";
+import type { TransactionItemProps } from "../../../domain/extrato/components";
 import { TransactionItemView } from "./TransactionItemView";
-import type { TransactionItemProps } from "../../../domain/extrato/TransactionItemState";
 
 export function TransactionItem(props: TransactionItemProps) {
-  const { isDark } = useTheme();
-  const { transaction, menuState, actions } = useTransactionItemAdapter(props);
+  // Usa adapter da infrastructure que gerencia toda a lógica
+  const viewState = useTransactionItemAdapter(props);
 
-  return (
-    <TransactionItemView
-      transaction={transaction}
-      isDark={isDark}
-      isMenuVisible={menuState.isVisible}
-      onToggleMenu={actions.onToggleMenu}
-      onEdit={actions.onEdit}
-      onDelete={actions.onDelete}
-      onProcess={actions.onProcess}
-    />
-  );
+  return <TransactionItemView {...viewState} />;
 }

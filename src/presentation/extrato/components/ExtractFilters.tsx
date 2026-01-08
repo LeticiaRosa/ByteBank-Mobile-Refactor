@@ -1,35 +1,19 @@
 /**
- * Presentation Layer - ExtractFilters Container
- *
- * Container que conecta adapter ao view.
+ * Presentation Layer - ExtractFilters
+ * Componente de apresentação que usa adapter da infrastructure
+ * Delega renderização para ExtractFiltersView
  */
 
-import { useFiltersAdapter } from "../../../infrastructure/extrato/useFiltersAdapter";
+import { useExtractFiltersAdapter } from "../../../infrastructure/extrato/components";
+import type { ExtractFiltersProps } from "../../../domain/extrato/components";
 import { ExtractFiltersView } from "./ExtractFiltersView";
-import type { FilterOptions } from "../../../domain/extrato/ExtratoState";
 
-interface ExtractFiltersProps {
-  onFilterChange: (filters: FilterOptions) => void;
-  onReset: () => void;
-}
+export function ExtractFilters(props: ExtractFiltersProps) {
+  // Usa adapter da infrastructure que gerencia toda a lógica
+  const viewState = useExtractFiltersAdapter(props);
 
-export function ExtractFilters({
-  onFilterChange,
-  onReset,
-}: ExtractFiltersProps) {
-  const { filters, isExpanded, modalsState, actions, formatDisplayDate } =
-    useFiltersAdapter({ onFilterChange, onReset });
-
-  return (
-    <ExtractFiltersView
-      filters={filters}
-      isExpanded={isExpanded}
-      modalsState={modalsState}
-      actions={actions}
-      formatDisplayDate={formatDisplayDate}
-    />
-  );
+  return <ExtractFiltersView {...viewState} />;
 }
 
 // Re-exportar tipos para compatibilidade
-export type { FilterOptions };
+export type { ExtractFiltersProps };
