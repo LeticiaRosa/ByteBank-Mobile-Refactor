@@ -24,7 +24,7 @@ console.log("🚀 [Sidebar] Iniciando lazy load dos componentes");
 const Home = lazy(() => {
   const loadStart = performance.now();
   console.log("⏳ [Sidebar] Carregando Home...");
-  return import("../home/Home").then((m) => {
+  return import("../home/Home.tsx").then((m) => {
     const loadEnd = performance.now();
     console.log(
       `✅ [Sidebar] Home carregado em ${(loadEnd - loadStart).toFixed(2)}ms`
@@ -36,7 +36,7 @@ const Home = lazy(() => {
 const Transactions = lazy(() => {
   const loadStart = performance.now();
   console.log("⏳ [Sidebar] Carregando Transactions...");
-  return import("../transactions/Transactions").then((m) => {
+  return import("../transactions/Transactions.tsx").then((m) => {
     const loadEnd = performance.now();
     console.log(
       `✅ [Sidebar] Transactions carregado em ${(loadEnd - loadStart).toFixed(
@@ -50,7 +50,7 @@ const Transactions = lazy(() => {
 const Profile = lazy(() => {
   const loadStart = performance.now();
   console.log("⏳ [Sidebar] Carregando Profile...");
-  return import("../profile/Profile").then((m) => {
+  return import("../profile/Profile.tsx").then((m) => {
     const loadEnd = performance.now();
     console.log(
       `✅ [Sidebar] Profile carregado em ${(loadEnd - loadStart).toFixed(2)}ms`
@@ -62,7 +62,7 @@ const Profile = lazy(() => {
 const ExtractPage = lazy(() => {
   const loadStart = performance.now();
   console.log("⏳ [Sidebar] Carregando ExtractPage...");
-  return import("../extrato/Extrato").then((m) => {
+  return import("../extrato/Extrato.tsx").then((m) => {
     const loadEnd = performance.now();
     console.log(
       `✅ [Sidebar] ExtractPage carregado em ${(loadEnd - loadStart).toFixed(
