@@ -48,10 +48,12 @@ export function ExpensesPieChartView({
           borderColor: borderColor,
         }}
       >
-        <CustomText className="text-lg font-semibold text-card-foreground mb-4">
-          Gastos por Categoria
+        <CustomText className="text-lg font-semibold text-card-foreground mb-1">
+          Gastos Totais por Categoria
         </CustomText>
-
+        <CustomText className="text-md text-muted-foreground mb-4">
+          Durante todo o período
+        </CustomText>
         {isLoading ? (
           <CustomText className="text-muted-foreground text-center py-8">
             Carregando dados...

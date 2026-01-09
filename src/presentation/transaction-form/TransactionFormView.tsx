@@ -78,7 +78,6 @@ export function TransactionFormView({
     setTypeModalVisible,
     setCategoryModalVisible,
   } = actions;
-  console.log(formData.amount);
   // Ícone baseado no tipo de transação
   const getTransactionIcon = () => {
     switch (formData.transaction_type) {

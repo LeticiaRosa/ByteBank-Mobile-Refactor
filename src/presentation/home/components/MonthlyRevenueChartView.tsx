@@ -47,7 +47,7 @@ export function MonthlyRevenueChartView({
       }}
     >
       <CustomText className="text-lg font-semibold text-card-foreground mb-4">
-        Receitas Mensais
+        Receitas de {new Date().getFullYear()}
       </CustomText>
 
       {isLoading ? (

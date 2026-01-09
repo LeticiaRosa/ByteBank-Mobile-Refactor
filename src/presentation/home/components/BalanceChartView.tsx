@@ -48,7 +48,7 @@ export function BalanceChartView({
       }}
     >
       <CustomText className="text-lg font-semibold text-card-foreground mb-4">
-        Evolução do Saldo Mensal
+        Evolução do Saldo de {new Date().getFullYear()}
       </CustomText>
 
       {isLoading ? (
