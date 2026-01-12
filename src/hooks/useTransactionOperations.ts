@@ -9,16 +9,15 @@ import { useToast } from "./useToast";
 
 /**
  * Hook para listar transações do usuário
+ * Nota: Não usa refetchInterval pois o sistema Realtime já atualiza automaticamente
  */
 export function useTransactionsList() {
   return useQuery({
     queryKey: QUERY_KEYS.transactions.list(),
     queryFn: () => transactionService.getTransactions(),
     ...QUERY_CONFIG.transactions,
-    refetchInterval: 60000, // 1 minuto
-    refetchIntervalInBackground: true,
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
+    refetchOnWindowFocus: false, // Realtime já mantém dados atualizados
+    refetchOnMount: false, // Realtime já mantém dados atualizados
   });
 }
 

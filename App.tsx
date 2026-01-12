@@ -9,12 +9,12 @@ import { AuthForm } from "./src/presentation/auth/AuthForm";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 15, // 15 segundos (alinhado com o menor staleTime em QUERY_CONFIG)
+      staleTime: 1000 * 60 * 2, // 2 minutos (aumentado de 15s para reduzir requisições)
       gcTime: 1000 * 60 * 30, // 30 minutos de cache (garbage collection time)
       retry: 2,
-      refetchOnWindowFocus: true, // Atualiza quando o app volta ao foco
-      refetchOnMount: true, // Atualiza quando componentes são montados
-      refetchOnReconnect: true, // Atualiza quando reconecta à internet
+      refetchOnWindowFocus: false, // Desabilitado - Realtime mantém dados atualizados
+      refetchOnMount: false, // Desabilitado - usa cache quando disponível
+      refetchOnReconnect: true, // Mantido - importante reconectar após perda de conexão
     },
   },
 });

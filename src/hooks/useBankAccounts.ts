@@ -123,8 +123,8 @@ export function useBankAccounts() {
     queryFn: () => bankAccountService.getBankAccounts(),
     ...QUERY_CONFIG.bankAccounts,
     // Atualização automática mais frequente para saldos sempre atuais
-    refetchInterval: 30000, // 30 segundos
-    refetchIntervalInBackground: true,
+    refetchInterval: 5 * 60 * 1000, // 5 minutos
+    refetchIntervalInBackground: false, // ⚠️ Não fazer polling em background
     refetchOnWindowFocus: true,
     refetchOnMount: true,
   });
@@ -142,8 +142,8 @@ export function usePrimaryBankAccount() {
     enabled: !!bankAccounts && bankAccounts.length > 0,
     ...QUERY_CONFIG.bankAccounts,
     // Atualização automática mais frequente para saldo sempre atual
-    refetchInterval: 30000, // 30 segundos
-    refetchIntervalInBackground: true,
+    refetchInterval: 5 * 60 * 1000, // 5 minutos
+    refetchIntervalInBackground: false, // ⚠️ Não fazer polling em background
     refetchOnWindowFocus: true,
     refetchOnMount: true,
   });

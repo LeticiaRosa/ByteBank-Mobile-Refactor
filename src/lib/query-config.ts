@@ -34,7 +34,7 @@ export const QUERY_KEYS = {
 export const QUERY_CONFIG = {
   // Configurações para transações
   transactions: {
-    staleTime: 1000 * 30, // 30 segundos - dados mais atualizados
+    staleTime: 1000 * 60 * 5, // 5 minutos (aumentado - Realtime mantém atualizado)
     gcTime: 1000 * 60 * 10, // 10 minutos
     retry: (failureCount: number, error: any) => {
       if (error.message.includes("Token de autenticação")) {
@@ -42,12 +42,12 @@ export const QUERY_CONFIG = {
       }
       return failureCount < 3;
     },
-    refetchOnWindowFocus: true, // Atualizar no foco da janela
+    refetchOnWindowFocus: false, // Desabilitado - Realtime mantém atualizado
   },
 
   // Configurações para contas bancárias
   bankAccounts: {
-    staleTime: 1000 * 15, // 15 segundos - saldos precisam ser atuais
+    staleTime: 1000 * 60 * 2, // 2 minutos (aumentado - atualiza via invalidação após transações)
     gcTime: 1000 * 60 * 5, // 5 minutos
     retry: (failureCount: number, error: any) => {
       if (error.message.includes("Token de autenticação")) {
@@ -55,7 +55,7 @@ export const QUERY_CONFIG = {
       }
       return failureCount < 3;
     },
-    refetchOnWindowFocus: true, // Saldos devem atualizar no foco
+    refetchOnWindowFocus: false, // Desabilitado - atualiza via invalidação
   },
 
   // Configurações para auth

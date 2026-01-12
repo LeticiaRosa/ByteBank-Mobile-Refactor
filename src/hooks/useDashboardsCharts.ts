@@ -58,8 +58,9 @@ export function useMonthlyBalanceData() {
         return []; // Retornar um array vazio em caso de erro
       }
     },
-    staleTime: 5 * 60 * 1000, // 5 minutos
-    refetchInterval: 5 * 60 * 1000, // Refetch a cada 5 minutos
+    staleTime: 10 * 60 * 1000, // 10 minutos
+    refetchInterval: 10 * 60 * 1000, // Refetch a cada 10 minutos (reduzido de 5min)
+    refetchIntervalInBackground: false, // Não fazer polling em background
   });
 }
 
@@ -105,8 +106,9 @@ export function useExpensesByCategory() {
         return []; // Retornar um array vazio em caso de erro
       }
     },
-    staleTime: 5 * 60 * 1000, // 5 minutos
-    refetchInterval: 5 * 60 * 1000, // Refetch a cada 5 minutos
+    staleTime: 10 * 60 * 1000, // 10 minutos
+    refetchInterval: 10 * 60 * 1000, // Refetch a cada 10 minutos (reduzido de 5min)
+    refetchIntervalInBackground: false, // Não fazer polling em background
   });
 }
 
@@ -136,8 +138,9 @@ export function useUserAccounts() {
         user_id: account.user_id,
       }));
     },
-    staleTime: 2 * 60 * 1000, // 2 minutos
-    refetchInterval: 2 * 60 * 1000, // Refetch a cada 2 minutos
+    staleTime: 10 * 60 * 1000, // 10 minutos
+    refetchInterval: 10 * 60 * 1000, // Refetch a cada 10 minutos (reduzido de 2min)
+    refetchIntervalInBackground: false, // Não fazer polling em background
   });
 }
 
